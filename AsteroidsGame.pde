@@ -2,11 +2,12 @@
 SpaceShip cool = new SpaceShip();
 Star [] sky;
 Asteroid [] bobbo;
+ArrayList <Asteroid> aList;
 int numStars = 100;
-int numAsteroids = 15;
+int numAsteroids = 30;
 public void setup() 
 {
-  bobbo = new Asteroid[numAsteroids];
+  aList = new ArrayList <Asteroid>();
   size(800, 800);
   background(0);
   sky = new Star[numStars];
@@ -16,7 +17,7 @@ public void setup()
   }
   for(int i = 0; i < numAsteroids; i++)
   {
-    bobbo[i] = new Asteroid();
+    aList.add(new Asteroid());
   }
 }
 
@@ -38,10 +39,14 @@ public void draw()
   }
   cool.move();
   cool.show();
-  for(int j = 0; j < numAsteroids; j++)
+  for(int j = 0; j < aList.size(); j++)
   {
-    bobbo[j].move();
-    bobbo[j].show();
+    aList.get(j).move();
+    aList.get(j).show();
+    if(dist(aList.get(j).getX(), aList.get(j).getY(), cool.getX(), cool.getY()) <= 20)
+    {
+      aList.remove(j);
+    }
   }
 }
 
@@ -79,16 +84,16 @@ class Asteroid extends Floater
   public Asteroid()
   {
     asteroidRotation = (int)(Math.random() * 5) - 2;
-    corners = 5;
-    int [] xS = {0, 5, 3, 5, 0};
-    int [] yS = {0, 0, 3, 5, 5};
+    corners = 7;
+    int [] xS = {-1, 8, 10, 6, 4, 2, -3};
+    int [] yS = {0, 0, 17, 17, 4, 17, 17};
     xCorners = xS;
     yCorners = yS;
     myCenterX = Math.random() * 800;
     myCenterY = Math.random() * 800;
     myDirectionX = Math.random() * 5 - 2;
     myDirectionY = Math.random() * 5 - 2;
-    myColor = 150;
+    myColor = color(17, 53, 114);
   }
   public void move()
   {     
