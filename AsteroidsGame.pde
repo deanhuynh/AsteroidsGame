@@ -1,13 +1,15 @@
 //your variable declarations here
 SpaceShip cool = new SpaceShip();
 Star [] sky;
-Asteroid [] bobbo;
+//Asteroid [] bobbo;
 ArrayList <Asteroid> aList;
+ArrayList <Bullet> bulls;
 int numStars = 100;
 int numAsteroids = 30;
 public void setup() 
 {
   aList = new ArrayList <Asteroid>();
+  bulls = new ArrayList <Bullet>();
   size(800, 800);
   background(0);
   sky = new Star[numStars];
@@ -27,6 +29,8 @@ public void keyPressed()
   if(key == 'a'){cool.rotate(-15);}
   if(key == 's'){cool.accelerate(-.1);}
   if(key == 'd'){cool.rotate(15);}
+  if(keyCode == 32){bulls.add(new Bullet(cool));}
+  if(key == 'e'){cool.setX((int)(Math.random() * 800)); cool.setY((int)(Math.random() * 800));}
 }
 
 public void draw() 
@@ -46,6 +50,25 @@ public void draw()
     if(dist(aList.get(j).getX(), aList.get(j).getY(), cool.getX(), cool.getY()) <= 20)
     {
       aList.remove(j);
+    }
+  }
+  for(int i = 0; i < bulls.size(); i++)
+  {
+    bulls.get(i).show();
+    bulls.get(i).move();
+    for(int j = 0; j < aList.size(); j++)
+    {
+      if(dist(aList.get(j).getX(), aList.get(j).getY(), bulls.get(i).getX(), bulls.get(i).getY()) <= 20)
+      {
+        aList.remove(j);
+        bulls.remove(i);
+        break;
+      }
+      else if(bulls.get(i).getX() > 790 || bulls.get(i).getX() < 10 || bulls.get(i).getY() > 790 || bulls.get(i).getY() < 10)
+      {
+        bulls.remove(i);
+        break;
+      }
     }
   }
 }
@@ -110,7 +133,7 @@ class Asteroid extends Floater
     {     
       myCenterX = width;    
     }    
-    if(myCenterY >height)
+    if(myCenterY > height)
     {    
       myCenterY = 0;    
     }   
